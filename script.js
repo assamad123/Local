@@ -14,15 +14,17 @@ class Paper {
   currentPaperX = 0;
   currentPaperY = 0;
   rotating = false;
-  dampingFactor = 0.2;
+  dampingFactor = 0.5;
 
   init(paper) {
+    const $paper = $(paper);
+
     const moveHandler = (e) => {
       let clientX, clientY;
 
-      if (e.touches) { // Touch event
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
+      if (e.type === 'touchmove') { // Touch event
+        clientX = e.originalEvent.touches[0].clientX;
+        clientY = e.originalEvent.touches[0].clientY;
         this.velX = (clientX - this.prevMouseX) * this.dampingFactor;
         this.velY = (clientY - this.prevMouseY) * this.dampingFactor;
       } else { // Mouse event
@@ -56,47 +58,51 @@ class Paper {
         this.prevMouseX = this.mouseX;
         this.prevMouseY = this.mouseY;
 
-        paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+        $paper.css('transform', `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`);
       }
     };
 
-    document.addEventListener('mousemove', moveHandler);
-    document.addEventListener('touchmove', moveHandler);
+    $(document).on('mousemove touchmove', moveHandler);
 
     const startHandler = (e) => {
       if (this.holdingPaper) return;
       this.holdingPaper = true;
 
-      paper.style.zIndex = highestZ;
+      $paper.css('zIndex', highestZ);
       highestZ += 1;
 
-      if (e.button === 0 || (e.touches && e.touches.length > 0)) {
+      if (e.type === 'mousedown' || (e.type === 'touchstart' && e.originalEvent.touches.length > 0)) {
         this.mouseTouchX = this.mouseX;
         this.mouseTouchY = this.mouseY;
         this.prevMouseX = this.mouseX;
         this.prevMouseY = this.mouseY;
+
+        // Define the new target location
+        const targetX = Math.random() * ($(window).width() - $paper.width());
+        const targetY = Math.random() * ($(window).height() - $paper.height());
+
+        // Animate the paper to the new location
+        $paper.animate({
+          transform: `translateX(${targetX}px) translateY(${targetY}px) rotateZ(${this.rotation}deg)`
+        }, 1000);
       }
-      if (e.button === 2 || (e.touches && e.touches.length === 2)) {
+      if (e.type === 'contextmenu' || (e.type === 'touchstart' && e.originalEvent.touches.length === 2)) {
         this.rotating = true;
       }
     };
 
-    paper.addEventListener('mousedown', startHandler);
-    paper.addEventListener('touchstart', startHandler);
+    $paper.on('mousedown touchstart', startHandler);
 
     const endHandler = () => {
       this.holdingPaper = false;
       this.rotating = false;
     };
 
-    window.addEventListener('mouseup', endHandler);
-    window.addEventListener('touchend', endHandler);
+    $(window).on('mouseup touchend', endHandler);
   }
 }
 
-const papers = Array.from(document.querySelectorAll('.paper'));
-
-papers.forEach((paper) => {
-  const p = new Paper();
-  p.init(paper);
+$('.paper').each(function () {
+  const paper = new Paper();
+  paper.init(this);
 });

@@ -8,7 +8,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-
+  overflow: hidden !important;
   background-size: 1000px;
   background-image: url("images/bkg.jpg");
   background-position: center center;
