@@ -14,7 +14,7 @@ class Paper {
   currentPaperX = 0;
   currentPaperY = 0;
   rotating = false;
-  dampingFactor = 0.5; // Adjust this value to slow down touch movement
+  dampingFactor = 0.2;
 
   init(paper) {
     const moveHandler = (e) => {
