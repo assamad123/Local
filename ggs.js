@@ -3,7 +3,7 @@
 var pulseDirection = 1;
 var pulseSpeed = 0.02;
 const body = document.getElementsByTagName("body").item(0);
-body.style.background = "#000";
+body.style.background = "rgb(41 40 40)";
 
 const TP = 2 * Math.PI;
 const CSIZE = 400;
