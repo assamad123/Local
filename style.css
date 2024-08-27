@@ -2,20 +2,29 @@
 
 
 
-
+.data{
+  position: relative;
+}
+.contenT{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden !important;
+}
 body {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden !important;
-  background-size: 1000px;
-  background-image: url("images/bkg.jpg");
-  background-position: center center;
 }
 
 .paper {
-  background-image: url("https://i0.wp.com/textures.world/wp-content/uploads/2018/10/2-Millimeter-Paper-Background-copy.jpg?ssl=1");
+  background-image: url("images/smallImg.jpg");
   background-size: 500px;
   background-position: center center;
   padding: 20px 100px;
@@ -65,8 +74,8 @@ img {
 p {
   font-family: 'Zeyada';
   font-size: 50px;
-  color: rgb(0,0,100);
-  opacity: 0.75;
+  color: rgb(255, 255, 255);
+  opacity: 0.85;
   user-select: none;
   
    filter: drop-shadow(2px 1.5px 1px rgba(0,0,105,0.9));
